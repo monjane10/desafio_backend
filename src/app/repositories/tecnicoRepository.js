@@ -1,4 +1,4 @@
-import conexao from "../database/conexao.js";
+import conexao, {consulta} from "../database/conexao.js";
 
 
 class TecnicoRepository {
@@ -6,23 +6,14 @@ class TecnicoRepository {
 create(tecnico) {
   const sql = "INSERT INTO tecnicos(nome,campanha_id) VALUES (?, ?)";
   const valores = [tecnico.nome, tecnico.campanha_id];
-  return new Promise(async (resolve, reject) => {
-    try {
-      conexao.query(sql, valores, (erro, resultado) => {
-        if (erro) {
-          return reject("Não foi possível cadastrar o tecnico");
-        } else {
-         return resolve({
-            id: resultado.insertId,
-            nome: tecnico.nome,
-            campanha_id: tecnico.campanha_id
-          });
-        }
+  return consulta(sql, valores, "Erro ao cadastrar o tecnico")
+    .then((resultado) => {
+        return {
+          id: resultado.insertId,            
+          nome: tecnico.nome,
+          campanha_id: tecnico.campanha_id
+        };
       });
-    } catch (error) {
-      reject("Erro inesperado ao cadastrar o tecnico");
-    }
-  });
 }
 
 
@@ -36,15 +27,7 @@ create(tecnico) {
     INNER JOIN produtores_campanhas pc ON pc.produtor_id = p.id
     WHERE pc.tecnico_id = ?
   `;
-  return new Promise((resolve, reject) => {
-    conexao.query(sql, [tecnico_id], (erro, resultado) => {
-      if (erro) {
-        console.error("Erro na consulta SQL:", erro);
-        return reject(new Error("Erro ao buscar produtores por técnico"));
-      }
-      resolve(resultado); 
-    });
-  });
+ return consulta(sql,tecnico_id, "Não foi possível listar os produtores do técnico")
 }
 }
 

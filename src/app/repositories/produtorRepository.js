@@ -1,18 +1,18 @@
-import conexao from "../database/conexao.js";
+import conexao,{consulta} from "../database/conexao.js";
 
 class ProdutorRepository {
-     create(productor) {
-         const sql = "INSERT INTO produtores(nome,localizacao) VALUES (?, ?)";
-         const valores = [productor.nome, productor.localizacao];
-         return new Promise((resolve, reject) => {
-         conexao.query(sql, valores, (erro, resultado) => {
-          if (erro) {
-             return reject("Não foi possível cadastrar o productor");
-         } else {
-             return resolve(resultado);
-        }
+ 
+  create(productor) {
+  const sql = "INSERT INTO produtores(nome, localizacao) VALUES (?, ?)";
+  const valores = [productor.nome, productor.localizacao];
+  return consulta(sql, valores, "Erro ao cadastrar o produtor")
+    .then((resultado) => {
+      return {
+        id: resultado.insertId,            
+        nome: productor.nome,
+        localizacao: productor.localizacao
+      };
     });
-  });
   }
 
 
@@ -22,28 +22,16 @@ class ProdutorRepository {
       VALUES (?, ?, ?)
     `;
     const valores = [produtor_id, tecnico_id, campanha_id];
-
-    return new Promise((resolve, reject) => {
-      conexao.query(sql, valores, (erro, resultado) => {
-        if (erro) {
-          console.error(erro);
-         return reject({
-             mensagem: "Não foi possível atribuir o produtor ao técnico.",
-            erro: erro.sqlMessage || erro.message || erro
-        });
-        } else {
-          return resolve({
-            mensagem: "Produtor atribuído ao técnico com sucesso.",
-            relacionamento: {
-              produtor_id,
-              tecnico_id,
-              campanha_id
-            }
-          });
-        }
-      });
+    return consulta(sql, valores, "Erro ao atribuir produtor ao técnico")
+    .then((resultado) => {
+      return {
+        id: resultado.insertId,            
+        produtor_id: produtor_id,
+        tecnico_id: tecnico_id,
+        campanha_id: campanha_id
+      };
     });
-  }
+   }
 
    async transferirProdutor(produtor_id, tecnico_antigo_id, tecnico_novo_id, campanha_id) {
     const verificarRelacionamento = `
