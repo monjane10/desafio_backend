@@ -25,10 +25,10 @@ class ProdutorController {
          return resp.status(400).json({ message: "os IDs do produtor, tecnico e campanha são obrigatórios." });
       }
       try {
-         const resultado = await ProdutorRepository.atribuirProdutor(produtor_id, tecnico_id, campanha_id);
+         const resultado = await ProdutorRepository.atribuirProdutorATecnico(produtor_id, tecnico_id, campanha_id);
          resp.status(201).json(resultado);
       } catch (erro) {
-         resp.status(500).json({ message: erro });
+         resp.status(500).json({ message: erro.message });
       }
    }
 
