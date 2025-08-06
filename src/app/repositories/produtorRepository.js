@@ -16,7 +16,7 @@ class ProdutorRepository {
   }
 
 
-    atribuirProdutor(produtor_id, tecnico_id, campanha_id) {
+    atribuirProdutorATecnico(produtor_id, tecnico_id, campanha_id) {
     const sql = `
       INSERT INTO produtores_campanhas(produtor_id, tecnico_id, campanha_id)
       VALUES (?, ?, ?)
@@ -75,7 +75,6 @@ class ProdutorRepository {
              erro: erroIns.sqlMessage || erroIns.message || erroIns
            } );
   }
-
             return resolve({
               mensagem: "Transferência realizada com sucesso.",
               relacionamento: {
