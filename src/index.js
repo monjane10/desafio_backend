@@ -15,6 +15,7 @@ app.post("/empresas", EmpresaController.store);
 app.post("/campanhas", CampanhaController.store);
 app.post("/tecnicos", TecnicoController.store);
 app.post("/produtores", ProductorController.store);
+app.post("/produtores/atribuir", ProductorController.atribuir);
 
 
 
