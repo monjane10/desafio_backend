@@ -1,12 +1,14 @@
-
-
 import mysql from "mysql2";
+import dotenv from 'dotenv';
+
+
+dotenv.config();
 
 const conexao = mysql.createConnection({
     host: "localhost",
     port: 3306,
     user: "root",
-    password: "olamundo",
+    password: process.env.DB_PASSWORD,
     database: "desafio_db"
 
 })
@@ -20,18 +22,24 @@ conexao.connect()
  * @param {string} mensagemReject mensagem a ser exibida 
  * @returns objecto da Promisse
  */
-export const consulta = (sql, valores='', mensagemReject) => {
-    return new Promise((resolve, reject) => {
-        conexao.query(sql, valores, (erro, resultado) => {
-            if(erro){
-                return reject(mensagemReject);
-            }else{
-               const row = JSON.parse(JSON.stringify(resultado));
-               return resolve(row);
-            }
-        });
-    });
-}
+export const consulta = (sql, valores = '', mensagemReject) => {
+  return new Promise((resolve, reject) => {
+    try {
+      conexao.query(sql, valores, (erro, resultado) => {
+        if (erro) {
+          return reject(mensagemReject);
+        } else {
+          const row = JSON.parse(JSON.stringify(resultado));
+          return resolve(row);
+        }
+      });
+    } catch (erro) {
+      return reject(`Erro inesperado: ${erro.message || erro}`);
+    }
+  });
+};
+
+
 
 
 export default conexao;

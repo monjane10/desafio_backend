@@ -1,23 +1,13 @@
-
 import express from 'express';
-import EmpresaController from './app/controllers/empresaController.js';
-import CampanhaController from './app/controllers/campanhaController.js';
-import TecnicoController from './app/controllers/tecnicoController.js';
-import ProductorController from './app/controllers/productorController.js';
-
+import routes from './routes.js';
 
 
 const app = express();
 app.use(express.json());
+app.use(routes);
 
 
-app.post("/empresas", EmpresaController.store);
-app.post("/campanhas", CampanhaController.store);
-app.post("/tecnicos", TecnicoController.store);
-app.post("/produtores", ProductorController.store);
-app.post("/produtores/atribuir", ProductorController.atribuir);
-app.put("/produtores/transferir", ProductorController.transferir);
-app.get('/tecnicos/:id/produtores', TecnicoController.listarProdutoresPorTecnico);
+
 
 
 
