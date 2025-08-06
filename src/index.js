@@ -1,5 +1,6 @@
 
 import express from 'express';
+import EmpresaController from './app/controllers/empresaController.js';
 
 
 
@@ -7,8 +8,7 @@ const app = express();
 app.use(express.json());
 
 
-app.get('/', (req, res) => {
-  res.send('Hello, World!');
-}
-);
+app.post("/empresas", EmpresaController.store);
+
+
 export default app;
