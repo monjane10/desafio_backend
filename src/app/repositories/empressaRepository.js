@@ -17,6 +17,20 @@ class EmpresaRepository {
   });
 
     }
+
+     findAll() {
+  const sql = "SELECT * FROM empresas";
+  
+  return new Promise((resolve, reject) => {
+    conexao.query(sql, (erro, resultado) => {
+      if (erro) {
+        return reject("Não foi possível localizar as empresas" + erro);
+      } else {
+        return resolve(resultado);
+      }
+    });
+  });
+}
 }
 
 export default new EmpresaRepository();
