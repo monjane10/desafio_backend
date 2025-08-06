@@ -1,5 +1,5 @@
 
-import conexao, {consulta} from "../database/conexao.js";
+import conexao, { consulta } from "../database/conexao.js";
 
 
 class CampanhaRepository {
@@ -8,15 +8,15 @@ class CampanhaRepository {
     const sql = "INSERT INTO campanhas(nome,empresa_id, data_fim) VALUES (?, ?, ?)";
     const valores = [campanha.nome, campanha.empresa_id, campanha.data_fim];
     return consulta(sql, valores, "Erro ao cadastrar a campanha")
-  .then((resultado) => {
-      return {
-        id: resultado.insertId,            
-        nome: campanha.nome,
-        empresa_id: campanha.empresa_id,
-        data_fim: campanha.data_fim
-      };
-    });
-}
+      .then((resultado) => {
+        return {
+          id: resultado.insertId,
+          nome: campanha.nome,
+          empresa_id: campanha.empresa_id,
+          data_fim: campanha.data_fim
+        };
+      });
+  }
 
 
 }
