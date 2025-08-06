@@ -50,12 +50,10 @@ class ProdutorRepository {
       SELECT * FROM produtores_campanhas
       WHERE produtor_id = ? AND tecnico_id = ? AND campanha_id = ?
     `;
-
     const apagarRelacionamento = `
       DELETE FROM produtores_campanhas
       WHERE produtor_id = ? AND tecnico_id = ? AND campanha_id = ?
     `;
-
     const criarRelacionamento = `
       INSERT INTO produtores_campanhas (produtor_id, tecnico_id, campanha_id, data_transferencia)
       VALUES (?, ?, ?, NOW())
@@ -66,14 +64,10 @@ class ProdutorRepository {
         if (erro || resultados.length === 0) {
           return reject("Relação anterior não encontrada.");
         }
-
-        // Apaga a atribuição antiga
         conexao.query(apagarRelacionamento, [produtor_id, tecnico_antigo_id, campanha_id], (erroDel) => {
           if (erroDel) {
             return reject("Erro ao remover técnico antigo.");
           }
-
-          // Adiciona uma nova atribuição
           conexao.query(criarRelacionamento, [produtor_id, tecnico_novo_id, campanha_id], (erroIns) => {
            if (erroIns) {
             return reject({
@@ -96,6 +90,8 @@ class ProdutorRepository {
       });
     });
   }
+
+  
 }
 
 
